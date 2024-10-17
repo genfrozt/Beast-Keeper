@@ -1,30 +1,60 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class SummonManager : MonoBehaviour
 {
-    public TMP_InputField playerInput; // Reference to the TextMeshPro InputField
-    public GameObject[] monsterPrefabs; // Array of monster prefabs
-
+    public TMP_InputField playerInput;
+    public GameObject[] monsterPrefabs;
+    public TextMeshProUGUI monsterStatsText;
+    public TextMeshProUGUI ticketCountText;
+    public TextMeshProUGUI monsterNameText; // UI for monster name
+    public Image npcImage;                  // NPC Image
+    public GameObject dialogueBox;          // Dialogue box panel
+    public TextMeshProUGUI dialogueText;    // Dialogue text inside the dialogue box
+    public int ticketCount = 1;
+    private GameObject currentMonster;
+    public Transform spawnPosition;
+    public static bool isMonsterSummoned = false;  // Track if a monster is summoned
 
     void Start()
     {
-        playerInput.onEndEdit.AddListener(delegate { SummonMonster(); });
+        UpdateTicketUI();
+        ShowDialogue("Welcome! To summon a monster, type a name and press enter. You need a ticket to summon, and you have " + ticketCount + " tickets to start.");
+        playerInput.onSubmit.AddListener(SummonMonster);
     }
 
-
-    public void SummonMonster()
+    public void SummonMonster(string inputText)
     {
-        string inputText = playerInput.text; // Get input text from TMP_InputField
-        Debug.Log("Player Input: " + inputText); // Log player input
+        if (ticketCount <= 0)
+        {
+            ShowDialogue("You don't have enough tickets to summon a monster!");
+            return;
+        }
 
         if (!string.IsNullOrEmpty(inputText))
         {
+            if (currentMonster != null)
+            {
+                Destroy(currentMonster);  // Destroy current monster before summoning a new one
+            }
+
             GenerateMonster(inputText);
+            ticketCount--;
+            UpdateTicketUI();
+
+            // Clear the input field after summoning
+            playerInput.text = "";
+
+            // Show NPC dialogue with the monster's name
+            ShowDialogue($"Wow! You have summoned {inputText}!");
+
+            // Set the flag to true after summoning a monster
+            isMonsterSummoned = true;
         }
         else
         {
-            Debug.Log("No input text provided."); // Handle empty input case
+            ShowDialogue("Please enter a name to summon a monster!");  // If input is empty
         }
     }
 
@@ -35,26 +65,21 @@ public class SummonManager : MonoBehaviour
         int strength = GetStatFromInput(input);
         int speed = GetStatFromInput(input);
 
-        Debug.Log("Monster Type: " + monsterType + " | Health: " + health + " | Strength: " + strength + " | Speed: " + speed);
+        currentMonster = Instantiate(monsterPrefabs[monsterType], spawnPosition.position, Quaternion.identity);
 
-        if (monsterPrefabs.Length > 0)
-        {
-            GameObject newMonster = Instantiate(monsterPrefabs[monsterType], new Vector3(0, 0, 0), Quaternion.identity);
-            MonsterStats stats = newMonster.GetComponent<MonsterStats>();
-            stats.SetStats(health, strength, speed);
-            Debug.Log("Monster summoned: " + newMonster.name);
-        }
-        else
-        {
-            Debug.LogWarning("No monster prefabs available.");
-        }
+        MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
+        stats.SetStats(health, strength, speed);
+
+        // Display the monster's name at the top
+        monsterNameText.text = input;
+
+        UpdateMonsterStatsUI(health, strength, speed);
     }
 
     int GetMonsterType(string input)
     {
-        int firstLetter = input[0]; // Get ASCII value of the first letter
-        Debug.Log("First letter ASCII: " + firstLetter);
-        return firstLetter % monsterPrefabs.Length; // Map to available monster prefabs
+        int firstLetter = input[0];
+        return firstLetter % monsterPrefabs.Length;
     }
 
     int GetStatFromInput(string input)
@@ -62,9 +87,50 @@ public class SummonManager : MonoBehaviour
         int statValue = 0;
         foreach (char c in input)
         {
-            statValue += c; // Simple way to sum ASCII values for a stat
+            statValue += c;
         }
-        Debug.Log("Stat value from input: " + statValue % 100);
-        return statValue % 100; // Cap stats at a max of 100
+        return statValue % 100;
     }
+
+    void UpdateMonsterStatsUI(int health, int strength, int speed)
+    {
+        monsterStatsText.text = $"Health: {health}\nStrength: {strength}\nSpeed: {speed}";
+    }
+
+    void UpdateTicketUI()
+    {
+        ticketCountText.text = $"Tickets: {ticketCount}";
+    }
+
+    // Show NPC dialogue
+    void ShowDialogue(string message)
+    {
+        dialogueBox.SetActive(true);
+        dialogueText.text = message;
+        npcImage.gameObject.SetActive(true);
+    }
+
+
+    void SaveMonsterData()
+    {
+        MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
+        MonsterTransfer.instance.SetMonsterData(currentMonster, monsterNameText.text, stats.health, stats.strength, stats.speed);
+    }
+
+    // When navigating to Ranch
+    void GoToRanch()
+    {
+        if (currentMonster != null)
+        {
+            SaveMonsterData();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("RanchScene");
+        }
+        else
+        {
+            ShowDialogue("Summon a monster first before going to the Ranch.");
+        }
+    }
+
+
+
 }

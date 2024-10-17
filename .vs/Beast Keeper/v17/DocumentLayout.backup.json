@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "F:\\Unity Project\\Beast Keeper\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\monstertransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\monstertransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\ranchbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ranchbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\monsterstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\monsterstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +26,46 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MonsterTransfer.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterTransfer.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MonsterTransfer.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterTransfer.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MonsterTransfer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T09:05:51.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RanchButton.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\RanchButton.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\RanchButton.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\RanchButton.cs",
+              "RelativeToolTip": "Assets\\Scripts\\RanchButton.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T08:57:10.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MonsterStats.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterStats.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MonsterStats.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterStats.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MonsterStats.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T02:14:03.802Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +74,7 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\SummonManager.cs",
               "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\SummonManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\SummonManager.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAA7wA4AAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAWwIQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-17T02:11:47.328Z",
               "EditorCaption": ""
