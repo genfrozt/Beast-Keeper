@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SummonManager : MonoBehaviour
 {
@@ -8,19 +9,18 @@ public class SummonManager : MonoBehaviour
     public GameObject[] monsterPrefabs;
     public TextMeshProUGUI monsterStatsText;
     public TextMeshProUGUI ticketCountText;
-    public TextMeshProUGUI monsterNameText; // UI for monster name
-    public Image npcImage;                  // NPC Image
-    public GameObject dialogueBox;          // Dialogue box panel
-    public TextMeshProUGUI dialogueText;    // Dialogue text inside the dialogue box
+    public TextMeshProUGUI monsterNameText;
+    public Image npcImage;
+    public GameObject dialogueBox;
+    public TextMeshProUGUI dialogueText;
     public int ticketCount = 1;
     private GameObject currentMonster;
     public Transform spawnPosition;
-    public static bool isMonsterSummoned = false;  // Track if a monster is summoned
 
     void Start()
     {
         UpdateTicketUI();
-        ShowDialogue("Welcome! To summon a monster, type a name and press enter. You need a ticket to summon, and you have " + ticketCount + " tickets to start.");
+        ShowDialogue("Welcome! To summon a monster, type a name and press enter. You need a ticket to summon, and you have {ticketCount} tickets to start.");
         playerInput.onSubmit.AddListener(SummonMonster);
     }
 
@@ -36,25 +36,24 @@ public class SummonManager : MonoBehaviour
         {
             if (currentMonster != null)
             {
-                Destroy(currentMonster);  // Destroy current monster before summoning a new one
+                Destroy(currentMonster);  // Destroy any existing monster
             }
 
             GenerateMonster(inputText);
             ticketCount--;
             UpdateTicketUI();
-
-            // Clear the input field after summoning
             playerInput.text = "";
 
             // Show NPC dialogue with the monster's name
             ShowDialogue($"Wow! You have summoned {inputText}!");
 
-            // Set the flag to true after summoning a monster
-            isMonsterSummoned = true;
+            // Save the summoned monster data for the Ranch scene
+            MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
+            MonsterTransfer.SetMonsterData(currentMonster, inputText, stats.health, stats.strength, stats.speed);
         }
         else
         {
-            ShowDialogue("Please enter a name to summon a monster!");  // If input is empty
+            ShowDialogue("Please enter a name to summon a monster!");
         }
     }
 
@@ -66,13 +65,10 @@ public class SummonManager : MonoBehaviour
         int speed = GetStatFromInput(input);
 
         currentMonster = Instantiate(monsterPrefabs[monsterType], spawnPosition.position, Quaternion.identity);
-
         MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
         stats.SetStats(health, strength, speed);
 
-        // Display the monster's name at the top
         monsterNameText.text = input;
-
         UpdateMonsterStatsUI(health, strength, speed);
     }
 
@@ -110,27 +106,27 @@ public class SummonManager : MonoBehaviour
         npcImage.gameObject.SetActive(true);
     }
 
-
-    void SaveMonsterData()
+    // Hide NPC dialogue
+    void HideDialogue()
     {
-        MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-        MonsterTransfer.instance.SetMonsterData(currentMonster, monsterNameText.text, stats.health, stats.strength, stats.speed);
+        dialogueBox.SetActive(false);
+        npcImage.gameObject.SetActive(false);
     }
 
-    // When navigating to Ranch
-    void GoToRanch()
+    // Button click event for navigating to the Ranch scene
+    public void OnRanchButtonClick()
     {
-        if (currentMonster != null)
+        if (MonsterTransfer.HasMonsterData())
         {
-            SaveMonsterData();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("RanchScene");
+            Debug.Log("Loading RanchScene with monster: " + MonsterTransfer.monsterName);
+            Debug.Log($"Monster stats - Health: {MonsterTransfer.health}, Strength: {MonsterTransfer.strength}, Speed: {MonsterTransfer.speed}");
+            SceneManager.LoadScene("RanchScene");
         }
         else
         {
-            ShowDialogue("Summon a monster first before going to the Ranch.");
+            ShowDialogue("We need to summon a monster before going to the ranch.");
         }
     }
-
 
 
 }

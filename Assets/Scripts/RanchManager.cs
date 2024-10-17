@@ -3,22 +3,26 @@ using TMPro;
 
 public class RanchManager : MonoBehaviour
 {
-    public Transform monsterSpawnPoint;  // Where the monster will be instantiated
-    public TextMeshProUGUI monsterNameText;  // Text UI for displaying monster's name
+    public Transform spawnPosition;  // Set in the Inspector for where the monster should appear
+    public TextMeshProUGUI monsterStatsText;
+    public TextMeshProUGUI monsterNameText;
 
     void Start()
     {
-        if (MonsterTransfer.instance.monsterPrefab != null)
+        if (MonsterTransfer.HasMonsterData())
         {
-            // Instantiate the monster from the saved data
-            GameObject monster = Instantiate(MonsterTransfer.instance.monsterPrefab, monsterSpawnPoint.position, Quaternion.identity);
-            MonsterStats stats = monster.GetComponent<MonsterStats>();
+            // Spawn the monster
+            GameObject spawnedMonster = Instantiate(MonsterTransfer.monsterPrefab, spawnPosition.position, Quaternion.identity);
 
-            // Set the monster's stats
-            stats.SetStats(MonsterTransfer.instance.health, MonsterTransfer.instance.strength, MonsterTransfer.instance.speed);
+            // Display monster's name and stats
+            monsterNameText.text = MonsterTransfer.monsterName;
+            monsterStatsText.text = $"Health: {MonsterTransfer.health}\nStrength: {MonsterTransfer.strength}\nSpeed: {MonsterTransfer.speed}";
 
-            // Display the monster's name
-            monsterNameText.text = MonsterTransfer.instance.monsterName;
+            Debug.Log("Monster spawned in RanchScene: " + MonsterTransfer.monsterName);
+        }
+        else
+        {
+            Debug.LogWarning("No monster data found in MonsterTransfer.");
         }
     }
 }

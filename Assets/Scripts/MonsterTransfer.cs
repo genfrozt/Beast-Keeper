@@ -1,32 +1,22 @@
 using UnityEngine;
 
-public class MonsterTransfer : MonoBehaviour
+public static class MonsterTransfer
 {
-    public static MonsterTransfer instance;
+    public static GameObject monsterPrefab;  // Holds the summoned monster's prefab
+    public static string monsterName;        // Holds the summoned monster's name
+    public static int health, strength, speed;  // Holds the summoned monster's stats
 
-    public GameObject monsterPrefab;  // The summoned monster's prefab
-    public string monsterName;        // The summoned monster's name
-    public int health, strength, speed;  // The summoned monster's stats
-
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);  // Don't destroy this object between scenes
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    public void SetMonsterData(GameObject prefab, string name, int health, int strength, int speed)
+    public static void SetMonsterData(GameObject prefab, string name, int h, int s, int spd)
     {
         monsterPrefab = prefab;
         monsterName = name;
-        this.health = health;
-        this.strength = strength;
-        this.speed = speed;
+        health = h;
+        strength = s;
+        speed = spd;
+    }
+
+    public static bool HasMonsterData()
+    {
+        return monsterPrefab != null;
     }
 }
