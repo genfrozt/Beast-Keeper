@@ -20,7 +20,7 @@ public class SummonManager : MonoBehaviour
     void Start()
     {
         UpdateTicketUI();
-        ShowDialogue("Welcome! To summon a monster, type a name and press enter. You need a ticket to summon, and you have {ticketCount} tickets to start.");
+        ShowDialogue("Welcome! To summon a monster, type a name and press enter. You need a ticket to summon, and you have " + ticketCount + " tickets to start.");
         playerInput.onSubmit.AddListener(SummonMonster);
     }
 
@@ -47,9 +47,11 @@ public class SummonManager : MonoBehaviour
             // Show NPC dialogue with the monster's name
             ShowDialogue($"Wow! You have summoned {inputText}!");
 
-            // Save the summoned monster data for the Ranch scene
+            // Save the monster prefab (not the instantiated object) for the Ranch scene
             MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-            MonsterTransfer.SetMonsterData(currentMonster, inputText, stats.health, stats.strength, stats.speed);
+            int monsterType = GetMonsterType(inputText);  // Get the monster type for the prefab
+
+            MonsterTransfer.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed);
         }
         else
         {
@@ -60,9 +62,11 @@ public class SummonManager : MonoBehaviour
     void GenerateMonster(string input)
     {
         int monsterType = GetMonsterType(input);
-        int health = GetStatFromInput(input);
-        int strength = GetStatFromInput(input);
-        int speed = GetStatFromInput(input);
+
+        // Randomize stats between 1 and 10
+        int health = Random.Range(1, 11);
+        int strength = Random.Range(1, 11);
+        int speed = Random.Range(1, 11);
 
         currentMonster = Instantiate(monsterPrefabs[monsterType], spawnPosition.position, Quaternion.identity);
         MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
@@ -76,16 +80,6 @@ public class SummonManager : MonoBehaviour
     {
         int firstLetter = input[0];
         return firstLetter % monsterPrefabs.Length;
-    }
-
-    int GetStatFromInput(string input)
-    {
-        int statValue = 0;
-        foreach (char c in input)
-        {
-            statValue += c;
-        }
-        return statValue % 100;
     }
 
     void UpdateMonsterStatsUI(int health, int strength, int speed)
@@ -127,6 +121,4 @@ public class SummonManager : MonoBehaviour
             ShowDialogue("We need to summon a monster before going to the ranch.");
         }
     }
-
-
 }
