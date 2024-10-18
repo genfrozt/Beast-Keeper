@@ -51,7 +51,7 @@ public class SummonManager : MonoBehaviour
             MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
             int monsterType = GetMonsterType(inputText);  // Get the monster type for the prefab
 
-            MonsterTransfer.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed);
+            MonsterTransfer.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed, stats.stamina, stats.lifespan);
         }
         else
         {
@@ -67,10 +67,12 @@ public class SummonManager : MonoBehaviour
         int health = Random.Range(1, 11);
         int strength = Random.Range(1, 11);
         int speed = Random.Range(1, 11);
+        int stamina =   100;
+        int lifespan = Random.Range(360, 720);
 
         currentMonster = Instantiate(monsterPrefabs[monsterType], spawnPosition.position, Quaternion.identity);
         MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-        stats.SetStats(health, strength, speed);
+        stats.SetStats(health, strength, speed, stamina, lifespan);
 
         monsterNameText.text = input;
         UpdateMonsterStatsUI(health, strength, speed);
@@ -113,7 +115,7 @@ public class SummonManager : MonoBehaviour
         if (MonsterTransfer.HasMonsterData())
         {
             Debug.Log("Loading RanchScene with monster: " + MonsterTransfer.monsterName);
-            Debug.Log($"Monster stats - Health: {MonsterTransfer.health}, Strength: {MonsterTransfer.strength}, Speed: {MonsterTransfer.speed}");
+            Debug.Log($"Monster stats - Health: {MonsterTransfer.health}, Strength: {MonsterTransfer.strength}, Speed: {MonsterTransfer.speed}, Stamina: {MonsterTransfer.stamina}, Lifespan: {MonsterTransfer.lifespan}");
             SceneManager.LoadScene("RanchScene");
         }
         else
