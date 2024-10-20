@@ -114,8 +114,6 @@ public class SummonManager : MonoBehaviour
     {
         if (MonsterTransfer.HasMonsterData())
         {
-            Debug.Log("Loading RanchScene with monster: " + MonsterTransfer.monsterName);
-            Debug.Log($"Monster stats - Health: {MonsterTransfer.health}, Strength: {MonsterTransfer.strength}, Speed: {MonsterTransfer.speed}, Stamina: {MonsterTransfer.stamina}, Lifespan: {MonsterTransfer.lifespan}");
             SceneManager.LoadScene("RanchScene");
         }
         else

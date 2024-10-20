@@ -7,9 +7,9 @@ public class RanchManager : MonoBehaviour
     public TextMeshProUGUI monsterStatsText;
     public TextMeshProUGUI monsterNameText;
     public TextMeshProUGUI npcDialogueText;
+    public TextMeshProUGUI goldText;
     public TextMeshProUGUI moodText;  // Display for the monster's mood
     public MonsterStats currentMonster;
-    public TextMeshProUGUI dayText;
     public Transform monsterSpawnPoint;
     public Button shadowBoxingButton;
     public Button weightLiftingButton;
@@ -17,19 +17,41 @@ public class RanchManager : MonoBehaviour
     public Button restButton;  // Rest button to reset stamina
     public Button yesButton;
     public Button noButton;
+    public CalendarManager calendarManager;
 
-    private int day = 1;
-    private int year = 1000;
     private string selectedTrainingType = "";
     private int trainingIncreaseAmount = 0;
+    
 
     // Mood and related variables
     private string monsterMood = "Relaxed";  // Default mood
     private int restCounter = 0;  // Tracks consecutive rest days with stamina >= 50
-    private int consecutiveTrainingDays = 0;
+    private int overworkedCounter = 0;
+
+
+    public Button foodButton;  // Button to open the food menu
+    public GameObject foodMenu;  // Food menu window to show available food
+    public Button strengthFoodButton;
+    public Button agilityFoodButton;
+    public Button healthFoodButton;
+    public Button staminaFoodButton;
+
+    private bool hasFedToday = false;  // Tracks if the monster has been fed today
+    private string selectedFoodType = "";  // Tracks the selected food
+
+    private bool isTrainingAction = false;
+    private bool isFeedingAction = false;
+
+    private int gold = 1000;  // Initial gold at the start of the game
+    private readonly int foodCost = 100;
 
     void Start()
     {
+        if (calendarManager == null)
+        {
+            calendarManager = FindObjectOfType<CalendarManager>();
+        }
+
         if (MonsterTransfer.HasMonsterData())
         {
             GameObject monsterInstance = Instantiate(MonsterTransfer.monsterPrefab, monsterSpawnPoint.position, Quaternion.identity);
@@ -45,17 +67,32 @@ public class RanchManager : MonoBehaviour
             Debug.LogError("No monster data found!");
         }
 
+        foodMenu.SetActive(false);
+        //Training System
         shadowBoxingButton.onClick.AddListener(() => PrepareTraining("speed", 2, "Shadowboxing can increase monster speed. Are you sure you want to start training?"));
         weightLiftingButton.onClick.AddListener(() => PrepareTraining("strength", 2, "Weightlifting can increase monster strength. Are you sure you want to start training?"));
-        joggingButton.onClick.AddListener(() => PrepareTraining("health", 2, "Jogging can increase monster health. Are you sure you want to start training?"));
+        joggingButton.onClick.AddListener(() => PrepareTraining("health", 2 , "Jogging can increase monster health. Are you sure you want to start training?"));
+
+        //Food System
+        foodButton.onClick.AddListener(OpenFoodMenu);
+        strengthFoodButton.onClick.AddListener(() => SelectFood("strength"));
+        agilityFoodButton.onClick.AddListener(() => SelectFood("agility"));
+        healthFoodButton.onClick.AddListener(() => SelectFood("health"));
+        staminaFoodButton.onClick.AddListener(() => SelectFood("stamina"));
 
         restButton.onClick.AddListener(RestMonster);  // Assign Rest button functionality
-        yesButton.onClick.AddListener(ConfirmTraining);
-        noButton.onClick.AddListener(CancelTraining);
-
+        yesButton.onClick.AddListener(ConfirmAction);
+        noButton.onClick.AddListener(ConfirmCancel);
+        HideFoodMenu();
+        
         HideConfirmationButtons();
-        UpdateDayUI();
         UpdateMoodUI();
+        UpdateGoldUI();
+    }
+
+    void UpdateGoldUI()
+    {
+        goldText.text = $"Gold: {gold}g";
     }
 
     void PrepareTraining(string statType, int increaseAmount, string message)
@@ -64,6 +101,8 @@ public class RanchManager : MonoBehaviour
         {
             npcDialogueText.text = $"{currentMonster.name} is already tired. Are you sure you want to continue training?";
             ShowConfirmationButtons();
+            isTrainingAction = true;   // Indicate this is a training action
+            isFeedingAction = false;
             selectedTrainingType = statType;
             trainingIncreaseAmount = increaseAmount;
         }
@@ -78,9 +117,10 @@ public class RanchManager : MonoBehaviour
             trainingIncreaseAmount = increaseAmount;
             npcDialogueText.text = message;
             ShowConfirmationButtons();
+            isTrainingAction = true;   // Indicate this is a training action
+            isFeedingAction = false;
         }
     }
-
     void ConfirmTraining()
     {
         if (currentMonster.stamina <= 0)
@@ -95,6 +135,9 @@ public class RanchManager : MonoBehaviour
         HideConfirmationButtons();
     }
 
+
+
+
     void CancelTraining()
     {
         npcDialogueText.text = "Training canceled.";
@@ -103,8 +146,8 @@ public class RanchManager : MonoBehaviour
 
     void TrainMonster()
     {
-        consecutiveTrainingDays++;
-        restCounter = 0;  // Reset rest counter on training
+       
+       
 
         switch (selectedTrainingType)
         {
@@ -121,12 +164,7 @@ public class RanchManager : MonoBehaviour
 
         currentMonster.stamina -= 25;
 
-        // Check if the monster becomes Overworked
-        if (consecutiveTrainingDays >= 3 && currentMonster.stamina <= 0)
-        {
-            SetMonsterMood("Overworked");
-        }
-
+       
         UpdateMonsterStatsUI();
     }
 
@@ -144,41 +182,178 @@ public class RanchManager : MonoBehaviour
         return baseAmount;  // Default training gain in Relaxed mood
     }
 
-    void AdvanceDay()
-    {
-        day++;
-        if (day > 360)
-        {
-            day = 1;
-            year++;
-        }
-        UpdateDayUI();
-    }
+   
 
     public void RestMonster()
     {
-        consecutiveTrainingDays = 0;  // Reset training days
-        currentMonster.stamina = 100;  // Rest restores stamina to 100
 
+        hasFedToday = false;  // Reset the feeding flag
+       
         // Increment rest counter if stamina is 50 or more
         if (currentMonster.stamina >= 50)
         {
+            SetMonsterMood("Relaxed");
             restCounter++;
+            if (overworkedCounter >= 3)
+            {
+                overworkedCounter = 0;
+                SetMonsterMood("Relaxed");
+            
+            }
             if (restCounter >= 3)
             {
+                overworkedCounter = 0;
                 SetMonsterMood("Eager");
             }
         }
         // Reset rest counter to 1 if stamina is 25 or below
-        else if (currentMonster.stamina <= 25)
+        else if (currentMonster.stamina == 25)
         {
-            restCounter = 1;
+            
+            restCounter = 0;
+            overworkedCounter = 0;
+            
             SetMonsterMood("Relaxed");
         }
+        else if (currentMonster.stamina <= 0)
+        {
+            overworkedCounter++;
+            if (restCounter >= 3)
+            {
+                restCounter = 0;
+                SetMonsterMood("Relaxed");
 
-        AdvanceDay();
+            }
+            if (overworkedCounter >= 3)
+            {
+                restCounter = 0;
+                SetMonsterMood("Overworked");
+            }
+        }
+
+        calendarManager.AdvanceDay();
+        currentMonster.stamina = 100;
         UpdateMonsterStatsUI();
     }
+
+
+    void OpenFoodMenu()
+    {
+        if (hasFedToday)
+        {
+            npcDialogueText.text = $"{currentMonster.name} has already been fed today!";
+            return;
+        }
+
+        foodMenu.SetActive(true);
+        npcDialogueText.text = "Please select a food to feed your monster.";
+    }
+
+
+    // Select food type
+    void SelectFood(string foodType)
+    {
+
+        selectedFoodType = foodType;
+        string foodDescription = "";
+       
+            switch (foodType)
+            {
+                case "strength":
+                    foodDescription = "Meat will increase Strength by 1 and restore 25 stamina.";
+                    break;
+                case "agility":
+                    foodDescription = "Milk will increase Agility by 1 and restore 25 stamina.";
+                    break;
+                case "health":
+                    foodDescription = "Bread will increase Health by 1 and restore 25 stamina.";
+                    break;
+                case "stamina":
+                    foodDescription = "Energy Bar will restore 25 stamina and make the monster Eager.";
+                    break;
+            }
+        
+        
+        npcDialogueText.text = foodDescription + " Do you want to feed this to your monster?";
+        isFeedingAction = true;
+        isTrainingAction = false;
+        ShowConfirmationButtons();
+    }
+
+    // Confirm food selection and apply effects
+
+    void ApplyFoodEffect()
+    {
+        if (gold >= foodCost)  // Check if player has enough gold
+        {
+            switch (selectedFoodType)
+            {
+                case "strength":
+                    currentMonster.strength += 1;
+                    currentMonster.stamina += 25;
+                    break;
+                case "agility":
+                    currentMonster.speed += 1;
+                    currentMonster.stamina += 25;
+                    break;
+                case "health":
+                    currentMonster.health += 1;
+                    currentMonster.stamina += 25;
+                    break;
+                case "stamina":
+                    currentMonster.stamina += 25;
+                    SetMonsterMood("Eager");
+                    break;
+            }
+        }
+        gold -= foodCost;
+        UpdateGoldUI();
+        hasFedToday = true;
+        npcDialogueText.text = $"{currentMonster.name} has eaten {selectedFoodType} food!";
+        HideConfirmationButtons();
+        HideFoodMenu();
+        UpdateMonsterStatsUI();
+    }
+
+
+    // Cancel food selection
+    void CancelFood()
+    {
+        npcDialogueText.text = "Feeding canceled.";
+        HideConfirmationButtons();
+    }
+
+    // Hide the food menu window
+    void HideFoodMenu()
+    {
+        foodMenu.SetActive(false);
+    }
+
+
+    void ConfirmAction()
+    {
+        if (isTrainingAction)
+        {
+            ConfirmTraining();
+        }
+        else if (isFeedingAction)
+        {
+            ApplyFoodEffect();
+        }
+    }
+
+    void ConfirmCancel()
+    {
+        if (isTrainingAction)
+        {
+            CancelTraining();
+        }
+        else if (isFeedingAction)
+        {
+            CancelFood();
+        }
+    }
+
 
     void SetMonsterMood(string newMood)
     {
@@ -189,7 +364,7 @@ public class RanchManager : MonoBehaviour
     void UpdateMonsterStatsUI()
     {
         monsterStatsText.text = $"Health: {currentMonster.health}\nStrength: {currentMonster.strength}\nSpeed: {currentMonster.speed}\nStamina: {currentMonster.stamina}\nLifespan: {currentMonster.lifespan}";
-        moodText.text = monsterMood;
+        moodText.text = $"Mood: {monsterMood}";
     }
 
     void UpdateMoodUI()
@@ -197,10 +372,7 @@ public class RanchManager : MonoBehaviour
         moodText.text = $"Mood: {monsterMood}";
     }
 
-    void UpdateDayUI()
-    {
-        dayText.text = $"Year: {year}, Day: {day}";
-    }
+
 
     void ShowConfirmationButtons()
     {
