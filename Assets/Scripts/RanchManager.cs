@@ -232,6 +232,15 @@ public class RanchManager : MonoBehaviour
         }
 
         calendarManager.AdvanceDay();
+        if (monsterMood == "Overworked")
+        {
+            currentMonster.lifespan-=2;
+        }
+        else
+        {
+            currentMonster.lifespan--;
+        }
+      
         currentMonster.stamina = 100;
         UpdateMonsterStatsUI();
     }
