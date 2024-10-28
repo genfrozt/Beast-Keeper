@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RanchManager : MonoBehaviour
 {
@@ -52,15 +53,14 @@ public class RanchManager : MonoBehaviour
             calendarManager = FindObjectOfType<CalendarManager>();
         }
 
-        if (MonsterTransfer.HasMonsterData())
+        if (MonsterDataManager.Instance.HasMonsterData())
         {
-            GameObject monsterInstance = Instantiate(MonsterTransfer.monsterPrefab, monsterSpawnPoint.position, Quaternion.identity);
-            currentMonster = monsterInstance.GetComponent<MonsterStats>();
+            // Access Monster data
+            GameObject prefab = MonsterDataManager.Instance.MonsterPrefab;
+            string name = MonsterDataManager.Instance.MonsterName;
 
-            currentMonster.SetStats(MonsterTransfer.health, MonsterTransfer.strength, MonsterTransfer.speed, MonsterTransfer.stamina, MonsterTransfer.lifespan);
-            monsterNameText.text = MonsterTransfer.monsterName;
-            UpdateMonsterStatsUI();
-            currentMonster.name = MonsterTransfer.monsterName;
+            // Implement logic for using these details in the Ranch
+            Debug.Log($"Loaded Monster: {name}");
         }
         else
         {
@@ -84,7 +84,8 @@ public class RanchManager : MonoBehaviour
         yesButton.onClick.AddListener(ConfirmAction);
         noButton.onClick.AddListener(ConfirmCancel);
         HideFoodMenu();
-        
+
+        Debug.Log(currentMonster.gameObject);
         HideConfirmationButtons();
         UpdateMoodUI();
         UpdateGoldUI();
@@ -394,4 +395,22 @@ public class RanchManager : MonoBehaviour
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
     }
+    
+    
+    public void OnArenaButtonClick()
+    {
+        if (calendarManager.tourneyToday == true)
+        {
+           
+            SceneManager.LoadScene("ArenaScene");
+            npcDialogueText.text = "Let's get ready to fight!";
+            
+        }
+        else
+        {
+            npcDialogueText.text = "There's no tournament today.";
+        }
+    }
+
+
 }

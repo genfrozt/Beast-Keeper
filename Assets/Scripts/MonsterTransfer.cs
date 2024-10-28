@@ -19,19 +19,24 @@ public class MonsterTransfer : MonoBehaviour
 
     public static void SetMonsterData(GameObject prefab, string name, int hp, int str, int spd, int stam, int life)
     {
-        monsterPrefab = prefab;
+        // Example approach if prefabs are assets
+        monsterPrefab = prefab; // Ensure this is a prefab asset
         monsterName = name;
         health = hp;
         strength = str;
         speed = spd;
         stamina = stam;
         lifespan = life;
-
         hasData = true;
     }
+
 
     public static bool HasMonsterData()
     {
         return hasData;
     }
+
+
+
+
 }

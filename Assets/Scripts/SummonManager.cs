@@ -36,7 +36,7 @@ public class SummonManager : MonoBehaviour
         {
             if (currentMonster != null)
             {
-                Destroy(currentMonster);  // Destroy any existing monster
+                Destroy(currentMonster);
             }
 
             GenerateMonster(inputText);
@@ -44,20 +44,22 @@ public class SummonManager : MonoBehaviour
             UpdateTicketUI();
             playerInput.text = "";
 
-            // Show NPC dialogue with the monster's name
             ShowDialogue($"Wow! You have summoned {inputText}!");
 
-            // Save the monster prefab (not the instantiated object) for the Ranch scene
+           
+            // Debug check before storing
             MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-            int monsterType = GetMonsterType(inputText);  // Get the monster type for the prefab
+            int monsterType = GetMonsterType(inputText);
 
-            MonsterTransfer.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed, stats.stamina, stats.lifespan);
+            MonsterDataManager.Instance.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed, stats.stamina, stats.lifespan);
+            Debug.Log($"Monster data set: {inputText}");
         }
         else
         {
             ShowDialogue("Please enter a name to summon a monster!");
         }
-    }
+    
+}
 
     void GenerateMonster(string input)
     {
@@ -100,13 +102,6 @@ public class SummonManager : MonoBehaviour
         dialogueBox.SetActive(true);
         dialogueText.text = message;
         npcImage.gameObject.SetActive(true);
-    }
-
-    // Hide NPC dialogue
-    void HideDialogue()
-    {
-        dialogueBox.SetActive(false);
-        npcImage.gameObject.SetActive(false);
     }
 
     // Button click event for navigating to the Ranch scene

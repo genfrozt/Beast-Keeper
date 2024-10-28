@@ -7,24 +7,24 @@
       "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ranchmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\calendarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\calendarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\arenamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\arenamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\monsterdatamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\monsterdatamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|f:\\unity project\\beast keeper\\assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\summonmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\ranchbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ranchbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\monsterstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\monsterstats.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\monstertransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\monstertransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|F:\\Unity Project\\Beast Keeper\\assets\\scripts\\calendarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D7A42C04-0D39-3E6D-719C-54388FF08FE8}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\calendarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,19 +34,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CalendarManager.cs",
-              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\CalendarManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\CalendarManager.cs",
-              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\CalendarManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\CalendarManager.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAASwFsAAAAoAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "MonsterDataManager.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterDataManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MonsterDataManager.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterDataManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MonsterDataManager.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA4wCoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-20T06:27:59.508Z",
+              "WhenOpened": "2024-10-28T09:22:37.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SummonManager.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\SummonManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SummonManager.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\SummonManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SummonManager.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAkwDAAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T02:11:47.328Z",
               "EditorCaption": ""
             },
             {
@@ -57,34 +70,35 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\RanchManager.cs",
               "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\RanchManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\RanchManager.cs",
-              "ViewState": "AgIAANIAAAAAAAAAAAAIwPAAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAYwJMBAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-17T09:11:16.849Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MonsterTransfer.cs",
-              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterTransfer.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\MonsterTransfer.cs",
-              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\MonsterTransfer.cs",
-              "RelativeToolTip": "Assets\\Scripts\\MonsterTransfer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ArenaManager.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\ArenaManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ArenaManager.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\ArenaManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ArenaManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAIwCQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T09:05:51.066Z"
+              "WhenOpened": "2024-10-28T07:41:53.644Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RanchButton.cs",
-              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\RanchButton.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\RanchButton.cs",
-              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\RanchButton.cs",
-              "RelativeToolTip": "Assets\\Scripts\\RanchButton.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "CalendarManager.cs",
+              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\CalendarManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CalendarManager.cs",
+              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\CalendarManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CalendarManager.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAwGIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T08:57:10.223Z"
+              "WhenOpened": "2024-10-20T06:27:59.508Z"
             },
             {
               "$type": "Document",
@@ -97,18 +111,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-17T02:14:03.802Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SummonManager.cs",
-              "DocumentMoniker": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\SummonManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\SummonManager.cs",
-              "ToolTip": "F:\\Unity Project\\Beast Keeper\\Assets\\Scripts\\SummonManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\SummonManager.cs",
-              "ViewState": "AgIAAFsAAAAAAAAAAAAEwGoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T02:11:47.328Z"
             }
           ]
         }

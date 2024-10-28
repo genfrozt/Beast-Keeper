@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RanchScene.unity
     guid: b8349b5634938b244939eb5b4c66f00d
+  - enabled: 1
+    path: Assets/Scenes/ArenaScene.unity
+    guid: 7444a2f4a707468449307223f8ece528
   m_configObjects: {}

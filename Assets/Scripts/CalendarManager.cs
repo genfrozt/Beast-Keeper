@@ -16,6 +16,7 @@ public class CalendarManager : MonoBehaviour
     public Button calendarButton;
     public Button calendarCloseButton;
     public List<int> tournamentDays = new(); // Store tournament days
+    public bool tourneyToday = false;
 
     private int day = 1;
     private int year = 1000;
@@ -95,6 +96,7 @@ public class CalendarManager : MonoBehaviour
         }
         else if (tournamentDays.Contains(day))
         {
+            tourneyToday = true;
             npcDialogueText.text = "Today's the tournament! You can access it by pressing the Battle button.";
         }
     }
