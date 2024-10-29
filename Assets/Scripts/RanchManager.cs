@@ -10,7 +10,7 @@ public class RanchManager : MonoBehaviour
     public TextMeshProUGUI npcDialogueText;
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI moodText;  // Display for the monster's mood
-    public MonsterStats currentMonster;
+    private GameObject currentMonsterInstance;
     public Transform monsterSpawnPoint;
     public Button shadowBoxingButton;
     public Button weightLiftingButton;
@@ -55,12 +55,8 @@ public class RanchManager : MonoBehaviour
 
         if (MonsterDataManager.Instance.HasMonsterData())
         {
-            // Access Monster data
-            GameObject prefab = MonsterDataManager.Instance.MonsterPrefab;
-            string name = MonsterDataManager.Instance.MonsterName;
+            LoadMonsterInRanch();// Access Monster data
 
-            // Implement logic for using these details in the Ranch
-            Debug.Log($"Loaded Monster: {name}");
         }
         else
         {
@@ -85,11 +81,32 @@ public class RanchManager : MonoBehaviour
         noButton.onClick.AddListener(ConfirmCancel);
         HideFoodMenu();
 
-        Debug.Log(currentMonster.gameObject);
+        Debug.Log(MonsterDataManager.Instance.MonsterPrefab);
         HideConfirmationButtons();
         UpdateMoodUI();
+        
         UpdateGoldUI();
     }
+
+
+    private void LoadMonsterInRanch()
+    {
+        if (MonsterDataManager.Instance.HasMonsterData())
+        {
+            currentMonsterInstance = Instantiate(MonsterDataManager.Instance.MonsterPrefab, monsterSpawnPoint.position, Quaternion.identity);
+            string name = MonsterDataManager.Instance.MonsterName;
+            monsterNameText.text = name;
+            // Access other properties as needed
+            UpdateMonsterStatsUI();
+            // Use this information to, e.g., instantiate the monster and configure it
+            Debug.Log($"Loaded Monster: {name}");
+        }
+        else
+        {
+            Debug.LogWarning("No monster data found!");
+        }
+    }
+
 
     void UpdateGoldUI()
     {
@@ -98,18 +115,18 @@ public class RanchManager : MonoBehaviour
 
     void PrepareTraining(string statType, int increaseAmount, string message)
     {
-        if (currentMonster.stamina == 25)
+        if (MonsterDataManager.Instance.Stamina == 25)
         {
-            npcDialogueText.text = $"{currentMonster.name} is already tired. Are you sure you want to continue training?";
+            npcDialogueText.text = $"{currentMonsterInstance.name} is already tired. Are you sure you want to continue training?";
             ShowConfirmationButtons();
             isTrainingAction = true;   // Indicate this is a training action
             isFeedingAction = false;
             selectedTrainingType = statType;
             trainingIncreaseAmount = increaseAmount;
         }
-        else if (currentMonster.stamina <= 0)
+        else if (MonsterDataManager.Instance.Stamina <= 0)
         {
-            npcDialogueText.text = $"{currentMonster.name} is too tired and needs a break!";
+            npcDialogueText.text = $"{currentMonsterInstance.name} is too tired and needs a break!";
             return;
         }
         else
@@ -124,14 +141,14 @@ public class RanchManager : MonoBehaviour
     }
     void ConfirmTraining()
     {
-        if (currentMonster.stamina <= 0)
+        if (MonsterDataManager.Instance.Stamina <= 0)
         {
-            npcDialogueText.text = $"{currentMonster.name} cannot train anymore. Please give the monster a break.";
+            npcDialogueText.text = $"{name} cannot train anymore. Please give the monster a break.";
         }
         else
         {
             TrainMonster();
-            npcDialogueText.text = $"{currentMonster.name} completed training and increased its {selectedTrainingType} by {trainingIncreaseAmount}!";
+            npcDialogueText.text = $"{name} completed training and increased its {selectedTrainingType} by {trainingIncreaseAmount}!";
         }
         HideConfirmationButtons();
     }
@@ -147,43 +164,48 @@ public class RanchManager : MonoBehaviour
 
     void TrainMonster()
     {
-       
-       
+        Debug.Log($"Training on {selectedTrainingType} with base gain {trainingIncreaseAmount}.");
 
         switch (selectedTrainingType)
         {
             case "speed":
-                currentMonster.speed += AdjustTrainingGain(trainingIncreaseAmount);
+                MonsterDataManager.Instance.Speed += AdjustTrainingGain(trainingIncreaseAmount);
                 break;
             case "strength":
-                currentMonster.strength += AdjustTrainingGain(trainingIncreaseAmount);
+                MonsterDataManager.Instance.Strength += AdjustTrainingGain(trainingIncreaseAmount);
                 break;
             case "health":
-                currentMonster.health += AdjustTrainingGain(trainingIncreaseAmount);
+                MonsterDataManager.Instance.Health += AdjustTrainingGain(trainingIncreaseAmount);
+                break;
+            default:
+                Debug.LogWarning("Unknown training type.");
                 break;
         }
 
-        currentMonster.stamina -= 25;
+        MonsterDataManager.Instance.Stamina -= 25;
 
-       
         UpdateMonsterStatsUI();
     }
 
-    // Adjusts training gains based on mood
     int AdjustTrainingGain(int baseAmount)
     {
+        int adjustedAmount = baseAmount;
         if (monsterMood == "Eager")
         {
-            return Mathf.CeilToInt(baseAmount * 1.5f);  // 50% boost in eager mood
+            adjustedAmount = Mathf.CeilToInt(baseAmount * 1.5f);
+            Debug.Log("Eager mood boost applied.");
         }
         else if (monsterMood == "Overworked")
         {
-            return Mathf.FloorToInt(baseAmount * 0.5f);  // 50% reduction in overworked mood
+            adjustedAmount = Mathf.FloorToInt(baseAmount * 0.5f);
+            Debug.Log("Overworked penalty applied.");
         }
-        return baseAmount;  // Default training gain in Relaxed mood
+        Debug.Log($"Adjusted training gain: {adjustedAmount}");
+        return adjustedAmount;
     }
 
-   
+
+
 
     public void RestMonster()
     {
@@ -191,7 +213,7 @@ public class RanchManager : MonoBehaviour
         hasFedToday = false;  // Reset the feeding flag
        
         // Increment rest counter if stamina is 50 or more
-        if (currentMonster.stamina >= 50)
+        if (MonsterDataManager.Instance.Stamina >= 50)
         {
             SetMonsterMood("Relaxed");
             restCounter++;
@@ -208,7 +230,7 @@ public class RanchManager : MonoBehaviour
             }
         }
         // Reset rest counter to 1 if stamina is 25 or below
-        else if (currentMonster.stamina == 25)
+        else if (MonsterDataManager.Instance.Stamina == 25)
         {
             
             restCounter = 0;
@@ -216,7 +238,7 @@ public class RanchManager : MonoBehaviour
             
             SetMonsterMood("Relaxed");
         }
-        else if (currentMonster.stamina <= 0)
+        else if (MonsterDataManager.Instance.Stamina <= 0)
         {
             overworkedCounter++;
             if (restCounter >= 3)
@@ -235,14 +257,14 @@ public class RanchManager : MonoBehaviour
         calendarManager.AdvanceDay();
         if (monsterMood == "Overworked")
         {
-            currentMonster.lifespan-=2;
+            MonsterDataManager.Instance.Lifespan-=2;
         }
         else
         {
-            currentMonster.lifespan--;
+            MonsterDataManager.Instance.Lifespan--;
         }
-      
-        currentMonster.stamina = 100;
+
+        MonsterDataManager.Instance.Stamina = 100;
         UpdateMonsterStatsUI();
     }
 
@@ -251,7 +273,7 @@ public class RanchManager : MonoBehaviour
     {
         if (hasFedToday)
         {
-            npcDialogueText.text = $"{currentMonster.name} has already been fed today!";
+            npcDialogueText.text = $"{MonsterDataManager.Instance.name} has already been fed today!";
             return;
         }
 
@@ -299,19 +321,19 @@ public class RanchManager : MonoBehaviour
             switch (selectedFoodType)
             {
                 case "strength":
-                    currentMonster.strength += 1;
-                    currentMonster.stamina += 25;
+                    MonsterDataManager.Instance.Strength += 1;
+                    MonsterDataManager.Instance.Stamina += 25;
                     break;
                 case "agility":
-                    currentMonster.speed += 1;
-                    currentMonster.stamina += 25;
+                    MonsterDataManager.Instance.Speed += 1;
+                    MonsterDataManager.Instance.Stamina += 25;
                     break;
                 case "health":
-                    currentMonster.health += 1;
-                    currentMonster.stamina += 25;
+                    MonsterDataManager.Instance.Health += 1;
+                    MonsterDataManager.Instance.Stamina += 25;
                     break;
                 case "stamina":
-                    currentMonster.stamina += 25;
+                    MonsterDataManager.Instance.Stamina += 25;
                     SetMonsterMood("Eager");
                     break;
             }
@@ -319,7 +341,7 @@ public class RanchManager : MonoBehaviour
         gold -= foodCost;
         UpdateGoldUI();
         hasFedToday = true;
-        npcDialogueText.text = $"{currentMonster.name} has eaten {selectedFoodType} food!";
+        npcDialogueText.text = $"{name} has eaten {selectedFoodType} food!";
         HideConfirmationButtons();
         HideFoodMenu();
         UpdateMonsterStatsUI();
@@ -373,7 +395,7 @@ public class RanchManager : MonoBehaviour
 
     void UpdateMonsterStatsUI()
     {
-        monsterStatsText.text = $"Health: {currentMonster.health}\nStrength: {currentMonster.strength}\nSpeed: {currentMonster.speed}\nStamina: {currentMonster.stamina}\nLifespan: {currentMonster.lifespan}";
+        monsterStatsText.text = $"Health: {MonsterDataManager.Instance.Health}\nStrength: {MonsterDataManager.Instance.Strength}\nSpeed: {MonsterDataManager.Instance.Speed}\nStamina: {MonsterDataManager.Instance.Stamina}\nLifespan: {MonsterDataManager.Instance.Lifespan}";
         moodText.text = $"Mood: {monsterMood}";
     }
 

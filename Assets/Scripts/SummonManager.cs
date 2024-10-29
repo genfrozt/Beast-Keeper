@@ -17,6 +17,9 @@ public class SummonManager : MonoBehaviour
     private GameObject currentMonster;
     public Transform spawnPosition;
 
+    
+   
+
     void Start()
     {
         UpdateTicketUI();
@@ -45,14 +48,7 @@ public class SummonManager : MonoBehaviour
             playerInput.text = "";
 
             ShowDialogue($"Wow! You have summoned {inputText}!");
-
-           
-            // Debug check before storing
-            MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-            int monsterType = GetMonsterType(inputText);
-
-            MonsterDataManager.Instance.SetMonsterData(monsterPrefabs[monsterType], inputText, stats.health, stats.strength, stats.speed, stats.stamina, stats.lifespan);
-            Debug.Log($"Monster data set: {inputText}");
+            
         }
         else
         {
@@ -73,9 +69,13 @@ public class SummonManager : MonoBehaviour
         int lifespan = Random.Range(360, 720);
 
         currentMonster = Instantiate(monsterPrefabs[monsterType], spawnPosition.position, Quaternion.identity);
-        MonsterStats stats = currentMonster.GetComponent<MonsterStats>();
-        stats.SetStats(health, strength, speed, stamina, lifespan);
-
+        MonsterDataManager.Instance.MonsterPrefab = monsterPrefabs[monsterType];
+        MonsterDataManager.Instance.MonsterName = input;
+        MonsterDataManager.Instance.Health = health;
+        MonsterDataManager.Instance.Strength = strength;
+        MonsterDataManager.Instance.Speed = speed;
+        MonsterDataManager.Instance.Stamina = stamina;
+        MonsterDataManager.Instance.Lifespan = lifespan;
         monsterNameText.text = input;
         UpdateMonsterStatsUI(health, strength, speed);
     }
@@ -107,13 +107,13 @@ public class SummonManager : MonoBehaviour
     // Button click event for navigating to the Ranch scene
     public void OnRanchButtonClick()
     {
-        if (MonsterTransfer.HasMonsterData())
-        {
-            SceneManager.LoadScene("RanchScene");
-        }
-        else
-        {
-            ShowDialogue("We need to summon a monster before going to the ranch.");
-        }
+        if (MonsterDataManager.Instance.HasMonsterData())
+    {
+        SceneManager.LoadScene("RanchScene");
+    }
+    else
+    {
+        ShowDialogue("We need to summon a monster before going to the ranch.");
+    }
     }
 }
